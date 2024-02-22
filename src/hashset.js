@@ -1,4 +1,4 @@
-class HashMap {
+class HashSet {
   buckets = [];
   size = 16;
   loadFactor = 0.75;
@@ -21,7 +21,7 @@ class HashMap {
     }
   };
 
-  set = (key, value) => {
+  set = (key) => {
     let index = this.hash(key);
     if (this.buckets[index] !== undefined) {
       let overwriteIndex = this.buckets[index].findIndex(
@@ -29,14 +29,14 @@ class HashMap {
       );
       if (overwriteIndex > -1) {
         //same key -> overwrite the value
-        this.buckets[index][overwriteIndex] = { key, value };
+        this.buckets[index][overwriteIndex] = { key };
       } else {
         //different key -> add to array
-        this.buckets[index] = [...this.buckets[index], { key, value }];
+        this.buckets[index] = [...this.buckets[index], { key }];
       }
     } else {
       //bucket empty -> create array
-      this.buckets[index] = [{ key, value }];
+      this.buckets[index] = [{ key }];
     }
 
     this.growBucketsIfNeeded();
@@ -47,7 +47,7 @@ class HashMap {
     if (this.buckets[index] === undefined) return null;
     for (let item of this.buckets[index]) {
       if (item.key === key) {
-        return item.value;
+        return item.key;
       }
     }
     return null;
@@ -107,34 +107,8 @@ class HashMap {
     }
     return keys;
   };
-
-  values = () => {
-    let values = [];
-    for (const bucket of this.buckets) {
-      if (bucket === undefined) continue;
-      for (const item of bucket) {
-        if (item !== undefined) {
-          values.push(item.value);
-        }
-      }
-    }
-    return values;
-  };
-
-  entries = () => {
-    let entries = [];
-    for (const bucket of this.buckets) {
-      if (bucket === undefined) continue;
-      for (const item of bucket) {
-        if (item !== undefined) {
-          entries.push([item.key, item.value]);
-        }
-      }
-    }
-    return entries;
-  };
 }
 
 module.exports = {
-  HashMap,
+  HashSet,
 };
